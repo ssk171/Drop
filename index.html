@@ -1,0 +1,102 @@
+const premios = [
+    {nome:"Pergaminho Raro", chance:46, imagem:"https://drive.google.com/file/d/1wIzu3WI48ZVXtJRfqu4teKUSeEMRFgBL/view?usp=drivesdk"},
+    {nome:"Pergaminho Épico", chance:25, imagem:"https://drive.google.com/file/d/1EYNLPT7Z8cI9EN0OSLKhBwBu3Jo8si0E/view?usp=drivesdk"},
+    {nome:"Pergaminho Lendário", chance:15, imagem:"https://drive.google.com/file/d/1EqIOWBiJGNTUtmp4NTRPUocISIryLX6j/view?usp=drivesdk"},
+    {nome:"Hiramekarei", chance:2, imagem:"https://drive.google.com/file/d/1Qvr4YonQfulJAr5-XfUMJO6UtAY3Yrvl/view?usp=drivesdk"},
+    {nome:"Kiba", chance:2, imagem:"https://drive.google.com/file/d/1Et_CNtSEWDqnfFrtDpur9bgo-x6vyT0X/view?usp=drivesdk"},
+    {nome:"Kabutowari", chance:2, imagem:"https://drive.google.com/file/d/1ciO_XBnOMGVnrTQJgKPLFukC8bHTDkqK/view?usp=drivesdk"},
+    {nome:"Kubikiribouchou", chance:2, imagem:"https://drive.google.com/file/d/146NkXxeoh-jJp3iRpIOGMOWSWrWOYvm0/view?usp=drivesdk"},
+    {nome:"Nuibari", chance:2, imagem:"https://drive.google.com/file/d/1w4AtCiSofJweY_hND1W_VxKrLMgu7inh/view?usp=drivesdk"},
+    {nome:"Samehada", chance:2, imagem:"https://drive.google.com/file/d/1zXgrA7YMPJOHnAvNNBxNx2Ebz0mUKkmU/view?usp=drivesdk"},
+    {nome:"Shibuki", chance:2, imagem:"https://drive.google.com/file/d/1JIIvG_QS84aqJeZtAeiOiyLzBw7zPy-3/view?usp=drivesdk"},
+];
+
+const botao = document.querySelector("button");
+const resultado = document.getElementById("resultado");
+
+function hojeString(){
+    return new Date().toISOString().split('T')[0];
+}
+
+function jaSorteouHoje(){
+    return localStorage.getItem("ultimoSorteio") === hojeString();
+}
+
+function salvarSorteioHoje(){
+    localStorage.setItem("ultimoSorteio", hojeString());
+}
+
+function tempoRestante(){
+    const agora = new Date();
+    const meiaNoite = new Date();
+    meiaNoite.setHours(24,0,0,0);
+
+    const diff = meiaNoite - agora;
+
+    const horas = Math.floor(diff / (1000 * 60 * 60));
+    const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((diff % (1000 * 60)) / 1000);
+
+    return `${horas}h ${minutos}m ${segundos}s`;
+}
+
+function iniciarContador(){
+    botao.disabled = true;
+    botao.innerText = "Disponível amanhã";
+
+    const contador = document.createElement("div");
+    contador.id = "contador";
+    contador.style.marginTop = "15px";
+    contador.style.fontSize = "18px";
+    contador.style.color = "gold";
+    resultado.appendChild(contador);
+
+    setInterval(()=>{
+        contador.innerHTML = `⏳ Novo sorteio em: <b>${tempoRestante()}</b>`;
+    },1000);
+}
+
+function verificarEstado(){
+    if(jaSorteouHoje()){
+        iniciarContador();
+    }
+}
+
+function sortear(){
+
+    if(jaSorteouHoje()){
+        iniciarContador();
+        return;
+    }
+
+    salvarSorteioHoje();
+
+    botao.disabled = true;
+
+    let som = document.getElementById("somRoleta");
+    som.play();
+
+    let numero = Math.random() * 100;
+    let acumulado = 0;
+    let premioEscolhido;
+
+    for(let i=0; i<premios.length; i++){
+        acumulado += premios[i].chance;
+        if(numero <= acumulado){
+            premioEscolhido = premios[i];
+            break;
+        }
+    }
+
+    setTimeout(()=>{
+        resultado.innerHTML = 
+        `🎉 Você ganhou: <b>${premioEscolhido.nome}</b><br>
+        <img src="${premioEscolhido.imagem}" width="200">`;
+        
+        iniciarContador();
+
+    }, 3000);
+}
+
+verificarEstado();
+</script>
