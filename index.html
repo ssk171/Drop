@@ -1,17 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drop Diário</title>
+<style>
+body{
+    background:#111;
+    color:white;
+    text-align:center;
+    font-family:Arial;
+    padding:20px;
+}
+button{
+    padding:15px 30px;
+    font-size:18px;
+    border-radius:10px;
+    border:none;
+    background:gold;
+    cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<h2>🎰 DROP DIÁRIO</h2>
+
+<button onclick="sortear()" id="botaoSortear">GIRAR</button>
+
+<div id="resultado" style="margin-top:20px;"></div>
+
+<script>
+
 const premios = [
-    {nome:"Pergaminho Raro", chance:46, imagem:"https://drive.google.com/file/d/1wIzu3WI48ZVXtJRfqu4teKUSeEMRFgBL/view?usp=drivesdk"},
-    {nome:"Pergaminho Épico", chance:25, imagem:"https://drive.google.com/file/d/1EYNLPT7Z8cI9EN0OSLKhBwBu3Jo8si0E/view?usp=drivesdk"},
-    {nome:"Pergaminho Lendário", chance:15, imagem:"https://drive.google.com/file/d/1EqIOWBiJGNTUtmp4NTRPUocISIryLX6j/view?usp=drivesdk"},
-    {nome:"Hiramekarei", chance:2, imagem:"https://drive.google.com/file/d/1Qvr4YonQfulJAr5-XfUMJO6UtAY3Yrvl/view?usp=drivesdk"},
-    {nome:"Kiba", chance:2, imagem:"https://drive.google.com/file/d/1Et_CNtSEWDqnfFrtDpur9bgo-x6vyT0X/view?usp=drivesdk"},
-    {nome:"Kabutowari", chance:2, imagem:"https://drive.google.com/file/d/1ciO_XBnOMGVnrTQJgKPLFukC8bHTDkqK/view?usp=drivesdk"},
-    {nome:"Kubikiribouchou", chance:2, imagem:"https://drive.google.com/file/d/146NkXxeoh-jJp3iRpIOGMOWSWrWOYvm0/view?usp=drivesdk"},
-    {nome:"Nuibari", chance:2, imagem:"https://drive.google.com/file/d/1w4AtCiSofJweY_hND1W_VxKrLMgu7inh/view?usp=drivesdk"},
-    {nome:"Samehada", chance:2, imagem:"https://drive.google.com/file/d/1zXgrA7YMPJOHnAvNNBxNx2Ebz0mUKkmU/view?usp=drivesdk"},
-    {nome:"Shibuki", chance:2, imagem:"https://drive.google.com/file/d/1JIIvG_QS84aqJeZtAeiOiyLzBw7zPy-3/view?usp=drivesdk"},
+    {nome:"Pergaminho Raro", chance:46, imagem:"Imagens/PergaminhoRaro.png"},
+    {nome:"Pergaminho Épico", chance:25, imagem:"Imagens/PergaminhoEpico.png"},
+    {nome:"Pergaminho Lendário", chance:15, imagem:"Imagens/Pergaminholendario.png"},
+    {nome:"Hiramekarei", chance:2, imagem:"Imagens/Hiramekarei.jpg"},
+    {nome:"Kiba", chance:2, imagem:"Imagens/Kiba.jpg"},
+    {nome:"Kabutowari", chance:2, imagem:"Imagens/Kabutowari.jpg"},
+    {nome:"Kubikiribouchou", chance:2, imagem:"Imagens/Kubikiribouchou .jpg"},
+    {nome:"Nuibari", chance:2, imagem:"Imagens/Nuibari.jpg"},
+    {nome:"Samehada", chance:2, imagem:"Imagens/Samehada.jpg"},
+    {nome:"Shibuki", chance:2, imagem:"Imagens/Shibuki.jpg"},
 ];
 
-const botao = document.querySelector("button");
+const botao = document.getElementById("botaoSortear");
 const resultado = document.getElementById("resultado");
 
 function hojeString(){
@@ -30,7 +64,6 @@ function tempoRestante(){
     const agora = new Date();
     const meiaNoite = new Date();
     meiaNoite.setHours(24,0,0,0);
-
     const diff = meiaNoite - agora;
 
     const horas = Math.floor(diff / (1000 * 60 * 60));
@@ -45,9 +78,7 @@ function iniciarContador(){
     botao.innerText = "Disponível amanhã";
 
     const contador = document.createElement("div");
-    contador.id = "contador";
     contador.style.marginTop = "15px";
-    contador.style.fontSize = "18px";
     contador.style.color = "gold";
     resultado.appendChild(contador);
 
@@ -70,11 +101,7 @@ function sortear(){
     }
 
     salvarSorteioHoje();
-
     botao.disabled = true;
-
-    let som = document.getElementById("somRoleta");
-    som.play();
 
     let numero = Math.random() * 100;
     let acumulado = 0;
@@ -92,11 +119,12 @@ function sortear(){
         resultado.innerHTML = 
         `🎉 Você ganhou: <b>${premioEscolhido.nome}</b><br>
         <img src="${premioEscolhido.imagem}" width="200">`;
-        
         iniciarContador();
-
-    }, 3000);
+    },2000);
 }
 
 verificarEstado();
+
 </script>
+</body>
+</html>
